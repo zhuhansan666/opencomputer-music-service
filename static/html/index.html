@@ -2,8 +2,6 @@
 <html lang="zh" data-darkreader-scheme="dark">
 <head>
     <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>DFPWM 转换器</title>
 </head>
 <body>
@@ -240,8 +238,60 @@
         )
     }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+<script>
+    const bootstrapJSLinks = [
+        'https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.min.js',
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js',
+    ]
+
+    const bootstrapCSSLinks = [
+        'https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css',
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css',
+    ]
+
+    function loadBootstrapJS(index=0) {
+        if (index >= bootstrapJSLinks.length) {
+            throw Error('load bootstrap js failed')
+        }
+
+        const scriptElement = document.createElement('script')
+        scriptElement.src = bootstrapJSLinks[index]
+        scriptElement.crossOrigin = "anonymous"
+        scriptElement.onerror = () => {
+            try {
+                scriptElement.remove()
+            } catch(e) {
+                console.error(e)
+            }
+            loadBootstrapJS(index+1)
+        }
+
+        document.body.appendChild(scriptElement)
+    }
+
+    function loadBootstrapCSS(index=0) {
+        if (index >= bootstrapCSSLinks.length) {
+            throw Error('load bootstrap css failed')
+        }
+
+        const linkElement = document.createElement('link')
+        linkElement.rel = 'stylesheet'
+        linkElement.href = bootstrapCSSLinks[index]
+        linkElement.crossOrigin = "anonymous"
+        linkElement.onerror = () => {
+            try {
+                linkElement.remove()
+            } catch(e) {
+                console.error(e)
+            }
+            loadBootstrapCSS(index+1)
+        }
+
+        document.head.appendChild(linkElement)
+    }
+
+    loadBootstrapJS()
+    loadBootstrapCSS()
+</script>
 </body>
 </html>
